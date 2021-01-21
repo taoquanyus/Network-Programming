@@ -13,6 +13,7 @@ public class ChatServer {
     private ServerSocket serverSocket;
     private int port;
     private List<Socket> socketList = new ArrayList<>();//  用来存socket
+    //现在还有一个最大的问题没有解决
 
     public ChatServer(int port){
         this.port=port;
@@ -112,9 +113,25 @@ public class ChatServer {
                 InputStreamReader isr = new InputStreamReader(inputStream);
                 BufferedReader br = new BufferedReader(isr);
                 while (true){
+                    int read=br.read();
+                    if(read==-1){
+                        //这两行应该是告诉其他用户，socket已经断开了连接
+                        int port=socket.getPort();
+                        System.out.println("Socket from port "+port+" is disconnected");
+                        socketList.remove(socket);
+                        socket.shutdownOutput();
+                        socket.shutdownInput();
+                        socket.close();
+                        break;
+                    }
                     String s=br.readLine();
                     System.out.println(s);
-                    for (Socket socket1 : socketList) {
+                    for(int i=0;i<socketList.size();++i){
+                        Socket socket1=socketList.get(i);
+                        /*if(socket1.isClosed()){
+                            socketList.remove(i);
+                            continue;
+                        }*/
                         Thread sendThread = new Thread(new SendThread(socket1, s));
                         sendThread.start();
                     }

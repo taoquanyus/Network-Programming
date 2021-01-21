@@ -3,6 +3,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientStarter {
+    public static boolean chatFlag;
     public static void main(String[] args) {
         System.out.println("Hi, Are you new here? \n please sign up or sign in");
         while(true){
@@ -45,19 +46,20 @@ public class ClientStarter {
         //下面应该是验证过后的
         System.out.println("welcome to chat room!");
         while(true){
+            chatFlag=true;
             System.out.println("please select function:");
             System.out.println("1.chat\n2.upload file\n3.download file\n");
             Scanner scanner=new Scanner(System.in);
             String input=scanner.nextLine();
-            if(input=="1"){//聊天模式
+            if(input.equals("1")){//聊天模式
                 //加入聊天室
                 JoinChatRoom();
             }
-            else if(input=="2"){//上传文件
+            else if(input.equals("2")){//上传文件
                 uploadFiles();
 
             }
-            else if(input=="3"){//下载文件
+            else if(input.equals("3")){//下载文件
                 downloadFiles();
             }
             else {
@@ -82,11 +84,41 @@ public class ClientStarter {
     private static void uploadFiles() {
         //上传文件，使用端口号8888
         //上传完一个文件应该自动结束，返回成功上传
+        Socket socket;
+        String ServerAddress="127.0.0.1";
+        int port=8888;
+        System.out.println("please input the file directory you want to upload");
+        Scanner scanner=new Scanner(System.in);
+        String fileDirectory=scanner.nextLine();
+        try{
+            socket=new Socket(ServerAddress,port);
+            FileTransferClient uploadclient=new FileTransferClient(socket,fileDirectory);
+            uploadclient.sendFile();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private static void JoinChatRoom() {
         //建立socket链接，这个端口号就定为9806
         //长时间保持在JoinChatRoom中，输出指令'\quit'即可退出
+        Socket socket;
+        String ServerAddress="127.0.0.1";
+        int port=9806;
+        try{
+            socket=new Socket(ServerAddress,port);
+            Thread sendThread = new Thread(new SendThread(socket));
+            Thread receiveThread = new Thread(new ReceiceThread(socket));
+            sendThread.start();
+            receiveThread.start();
+            while(chatFlag){
+                Thread.sleep(100);
+            }//死循环
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private static String ResultOfSignIn(String usrname, String password) {
@@ -134,6 +166,66 @@ public class ClientStarter {
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    private static class SendThread implements Runnable {
+        Socket socket;
+        public SendThread(Socket socket) {
+            this.socket=socket;
+        }
+
+        @Override
+        public void run() {
+            try {
+                OutputStream outputStream=socket.getOutputStream();
+                OutputStreamWriter osw=new OutputStreamWriter(outputStream);
+                PrintWriter pw=new PrintWriter(osw,true);
+                Scanner scanner=new Scanner(System.in);
+                while(true){
+                    String message=scanner.nextLine();
+                    if(message.equals("\\quit")){//退出聊天程序
+                        chatFlag=false;
+                        socket.shutdownOutput();
+                        break;
+                    }
+                    String text_temp="client1 says: "+message;
+                    pw.println(text_temp);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static class ReceiceThread implements Runnable {
+        Socket socket;
+
+        public ReceiceThread(Socket socket) {
+            this.socket=socket;
+        }
+
+        @Override
+        public void run() {
+            try{
+                InputStream inputStream=socket.getInputStream();
+                InputStreamReader isr=new InputStreamReader(inputStream);
+                BufferedReader br =new BufferedReader(isr);
+                while(true){
+//                    if(!chatFlag) break;
+                    int read=br.read();
+                    if(read==-1){
+                        socket.shutdownInput();
+                        socket.close();
+                        break;
+                    }
+                    String receiveMessage=br.readLine();
+                    System.out.println(receiveMessage);
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 }

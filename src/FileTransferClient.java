@@ -5,25 +5,30 @@ import java.net.Socket;
 
 public class FileTransferClient extends Socket {
 
-    private static final String SERVER_IP = "127.0.0.1"; // 服务端IP
-    private static final int SERVER_PORT = 8899; // 服务端端口
+//    private static final String SERVER_IP = "127.0.0.1"; // 服务端IP
+//    private static final int SERVER_PORT = 8899; // 服务端端口
 
     private Socket client;
-
+    private String fileDirectory;
     private FileInputStream fis;
-
     private DataOutputStream dos;
+
+    public FileTransferClient( Socket client, String fileDirectory) {
+        this.client = client;
+        this.fileDirectory = fileDirectory;
+    }
 
     /**
      * 构造函数<br/>
      * 与服务器建立连接
      * @throws Exception
      */
-    public FileTransferClient() throws Exception {
-        super(SERVER_IP, SERVER_PORT);
-        this.client = this;
-        System.out.println("Cliect[port:" + client.getLocalPort() + "] 成功连接服务端");
-    }
+
+//    public FileTransferClient() throws Exception {
+//        super(SERVER_IP, SERVER_PORT);
+//        this.client = this;
+//        System.out.println("Cliect[port:" + client.getLocalPort() + "] 成功连接服务端");
+//    }
 
     /**
      * 向服务端传输文件
@@ -31,7 +36,8 @@ public class FileTransferClient extends Socket {
      */
     public void sendFile() throws Exception {
         try {
-            File file = new File("/Users/quanyu/Desktop/testfile.txt");
+//            File file = new File("/Users/quanyu/Desktop/testfile.txt");
+            File file = new File(fileDirectory);
             if(file.exists()) {
                 fis = new FileInputStream(file);
                 dos = new DataOutputStream(client.getOutputStream());
@@ -71,13 +77,13 @@ public class FileTransferClient extends Socket {
      * 入口
      * @param args
      */
-    public static void main(String[] args) {
-        try {
-            FileTransferClient client = new FileTransferClient(); // 启动客户端连接
-            client.sendFile(); // 传输文件
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            FileTransferClient client = new FileTransferClient(); // 启动客户端连接
+//            client.sendFile(); // 传输文件
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

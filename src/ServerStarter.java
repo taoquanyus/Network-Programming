@@ -37,6 +37,8 @@ public class ServerStarter {
     }
 
     private static class UploadRunnable implements Runnable {
+        //3.开启接收文件上传功能 端口号8888
+//        GetUpLoadServer upLoadServer=new GetUpLoadServer(8888);
         @Override
         public void run() {
             GetUpLoadServer upLoadServer=new GetUpLoadServer(8888);

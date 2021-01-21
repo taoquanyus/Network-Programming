@@ -20,6 +20,10 @@ public class FileTransferServer extends ServerSocket {
 
     private static DecimalFormat df = null;
 
+    private Socket server;
+
+    private String Filename;
+
     static {
         // 设置数字格式，保留一位有效小数
         df = new DecimalFormat("#0.0");
