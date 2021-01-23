@@ -22,7 +22,7 @@ public class FileTransferServer extends ServerSocket {
 
     private Socket server;
 
-    private String Filename;
+    private String FileName;
 
     static {
         // 设置数字格式，保留一位有效小数
@@ -77,7 +77,7 @@ public class FileTransferServer extends ServerSocket {
                 // 文件名和长度
                 String fileName = dis.readUTF();
                 long fileLength = dis.readLong();
-                File directory = new File("/Users/quanyu/Desktop/Project");
+                File directory = new File("/Users/quanyu/Desktop");
                 if(!directory.exists()) {
                     directory.mkdir();
                 }

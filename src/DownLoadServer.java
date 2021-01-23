@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -18,5 +18,35 @@ public class DownLoadServer {
     }
 
     public void start() {
+        while(true) {
+            try {
+                String default_path="/Users/quanyu/Desktop/FileCollector/";
+                Socket socket = serverSocket.accept();
+                OutputStream outputStream=socket.getOutputStream();
+                OutputStreamWriter outputStreamWriter=new OutputStreamWriter(outputStream);
+                PrintWriter printWriter=new PrintWriter(outputStream,true);
+
+                StringBuilder sb=new StringBuilder();
+                File file=new File(default_path);
+                File[]fs=file.listFiles();
+                String temp;
+                for(File f:fs){
+                    if(!f.isDirectory()) sb.append(f.getName());
+                    sb.append(" ");
+                }
+
+                printWriter.println(sb.toString());
+                InputStream inputStream = socket.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader br = new BufferedReader(inputStreamReader);
+                String filename=br.readLine();
+                String FileDirectory=default_path+filename;
+                FileTransferClient ServerSend=new FileTransferClient(socket,FileDirectory);
+                ServerSend.sendFile();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

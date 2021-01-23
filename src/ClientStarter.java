@@ -79,6 +79,18 @@ public class ClientStarter {
     private static void downloadFiles() {
         //下载文件，使用端口号9999
         //下载完一个文件应该自动结束，返回成功下载
+        Socket socket;
+        String ServerAddress="127.0.0.1";
+        int port =9999;
+        System.out.println("which one you want to download?");
+        try{
+            socket=new Socket(ServerAddress,port);
+            FileDownloadClient downloadclient=new FileDownloadClient(socket);
+            downloadclient.download();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private static void uploadFiles() {
