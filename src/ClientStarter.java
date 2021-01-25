@@ -198,6 +198,8 @@ public class ClientStarter {
                 while(true){
                     String message=scanner.nextLine();
                     if(message.equals("\\quit")){//退出聊天程序
+                        String text_temp="【"+nickname+" left the chatroom】";
+                        pw.println(text_temp);
                         chatFlag=false;
                         socket.shutdownOutput();
                         break;
