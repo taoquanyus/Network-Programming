@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class ClientStarter {
     public static boolean chatFlag;
+    public static String nickname;
     public static void main(String[] args) {
         System.out.println("Hi, Are you new here? \n please sign up or sign in");
         while(true){
@@ -28,7 +29,7 @@ public class ClientStarter {
                 String usrname= scanner.nextLine();
                 System.out.println("please input your user password");
                 String password= scanner.nextLine();
-                String nickname=ResultOfSignIn(usrname,password);
+                nickname=ResultOfSignIn(usrname,password);
                 if(nickname!=null){
                     System.out.println("Hi "+nickname+"!");
                     break;
@@ -201,7 +202,7 @@ public class ClientStarter {
                         socket.shutdownOutput();
                         break;
                     }
-                    String text_temp="client1 says: "+message;
+                    String text_temp="【"+nickname+"】"+" : "+message;
                     pw.println(text_temp);
                 }
             } catch (IOException e) {
@@ -225,13 +226,12 @@ public class ClientStarter {
                 BufferedReader br =new BufferedReader(isr);
                 while(true){
 //                    if(!chatFlag) break;
-                    int read=br.read();
-                    if(read==-1){
+                    String receiveMessage=br.readLine();
+                    if(receiveMessage==null){
                         socket.shutdownInput();
                         socket.close();
                         break;
                     }
-                    String receiveMessage=br.readLine();
                     System.out.println(receiveMessage);
                 }
             }

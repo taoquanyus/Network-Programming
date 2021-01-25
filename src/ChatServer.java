@@ -113,8 +113,19 @@ public class ChatServer {
                 InputStreamReader isr = new InputStreamReader(inputStream);
                 BufferedReader br = new BufferedReader(isr);
                 while (true){
-                    int read=br.read();
-                    if(read==-1){
+//                    int read=br.read();
+                    /*if(read==-1){
+                        //这两行应该是告诉其他用户，socket已经断开了连接
+                        int port=socket.getPort();
+                        System.out.println("Socket from port "+port+" is disconnected");
+                        socketList.remove(socket);
+                        socket.shutdownOutput();
+                        socket.shutdownInput();
+                        socket.close();
+                        break;
+                    }*/
+                    String s=br.readLine();
+                    if(s==null){
                         //这两行应该是告诉其他用户，socket已经断开了连接
                         int port=socket.getPort();
                         System.out.println("Socket from port "+port+" is disconnected");
@@ -124,7 +135,6 @@ public class ChatServer {
                         socket.close();
                         break;
                     }
-                    String s=br.readLine();
                     System.out.println(s);
                     for(int i=0;i<socketList.size();++i){
                         Socket socket1=socketList.get(i);
