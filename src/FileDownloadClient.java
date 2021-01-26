@@ -30,7 +30,7 @@ public class FileDownloadClient {
             dis=new DataInputStream(socket.getInputStream());
 
             String fileName=dis.readUTF();//注意，此filename 和上面的那个不同，下面的是大写
-            File directory=new File("/Users/quanyu/Desktop/clientDownload");
+            File directory=new File("/Users/quanyu/Desktop/Client/files/");
             if(!directory.exists()){
                 directory.mkdir();
             }

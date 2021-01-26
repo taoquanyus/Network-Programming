@@ -20,7 +20,7 @@ public class DownLoadServer {
     public void start() {
         while(true) {
             try {
-                String default_path="/Users/quanyu/Desktop/FileCollector/";
+                String default_path="/Users/quanyu/Desktop/Server/files/";
                 Socket socket = serverSocket.accept();
                 OutputStream outputStream=socket.getOutputStream();
                 OutputStreamWriter outputStreamWriter=new OutputStreamWriter(outputStream);

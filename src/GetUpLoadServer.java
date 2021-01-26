@@ -43,7 +43,7 @@ public class GetUpLoadServer {
 
                 // 文件名和长度
                 String fileName = dis.readUTF();
-                File directory = new File("/Users/quanyu/Desktop/FileCollector");//存放上传文件的路径
+                File directory = new File("/Users/quanyu/Desktop/Server/files");//存放上传文件的路径
                 if(!directory.exists()) {
                     directory.mkdir();
                 }
