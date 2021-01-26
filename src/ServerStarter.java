@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public class ServerStarter {
     public static void main(String[] args) {
         //ServerStarter要做那些事？
@@ -31,8 +33,11 @@ public class ServerStarter {
     private static class ChatRunnable implements Runnable {
         @Override
         public void run() {
-            ChatServer chatServer=new ChatServer(9806);
-            chatServer.start();
+            try {
+                ChatServer chatServer = new ChatServer(9806);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -1,3 +1,5 @@
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -116,11 +118,19 @@ public class ClientStarter {
     private static void JoinChatRoom() {
         //建立socket链接，这个端口号就定为9806
         //长时间保持在JoinChatRoom中，输出指令'\quit'即可退出
-        Socket socket;
+        SSLSocket socket;
         String ServerAddress="127.0.0.1";
         int port=9806;
+        System.setProperty("javax.net.ssl.keyStore", "/Users/quanyu/Desktop/Client/secure/kclient.keystore");
+        System.setProperty("javax.net.ssl.keyStorePassword", "227195");
+        System.setProperty("javax.net.ssl.trustStore", "/Users/quanyu/Desktop/Client/secure/tclient.keystore");
+        System.setProperty("javax.net.ssl.trustStorePassword", "227195");
         try{
-            socket=new Socket(ServerAddress,port);
+            SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory
+                    .getDefault();
+            socket = (SSLSocket) sslsocketfactory.createSocket(
+                    ServerAddress, port);
+//            socket=new Socket(ServerAddress,port);
             Thread sendThread = new Thread(new SendThread(socket));
             Thread receiveThread = new Thread(new ReceiceThread(socket));
             sendThread.start();
@@ -195,11 +205,13 @@ public class ClientStarter {
                 OutputStreamWriter osw=new OutputStreamWriter(outputStream);
                 PrintWriter pw=new PrintWriter(osw,true);
                 Scanner scanner=new Scanner(System.in);
+                String join_text="【"+nickname+" join the chatroom】";
+                pw.println(join_text);
                 while(true){
                     String message=scanner.nextLine();
                     if(message.equals("\\quit")){//退出聊天程序
-                        String text_temp="【"+nickname+" left the chatroom】";
-                        pw.println(text_temp);
+                        String leave_text="【"+nickname+" left the chatroom】";
+                        pw.println(leave_text);
                         chatFlag=false;
                         socket.shutdownOutput();
                         break;
