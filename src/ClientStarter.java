@@ -121,9 +121,9 @@ public class ClientStarter {
         SSLSocket socket;
         String ServerAddress="127.0.0.1";
         int port=9806;
-        System.setProperty("javax.net.ssl.keyStore", "/Users/quanyu/Desktop/Client/secure/kclient.keystore");
+        System.setProperty("javax.net.ssl.keyStore", "/Users/quanyu/Desktop/Files/project/socket编程project/ChatRoom/Client/secure/kclient.keystore");
         System.setProperty("javax.net.ssl.keyStorePassword", "227195");
-        System.setProperty("javax.net.ssl.trustStore", "/Users/quanyu/Desktop/Client/secure/tclient.keystore");
+        System.setProperty("javax.net.ssl.trustStore", "/Users/quanyu/Desktop/Files/project/socket编程project/ChatRoom/Client/secure/tclient.keystore");
         System.setProperty("javax.net.ssl.trustStorePassword", "227195");
         try{
             SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory

@@ -16,7 +16,7 @@ public class ChatServer {
     private SSLServerSocket serverSocket;
     private int port;
     private List<SSLSocket> socketList = new ArrayList<>();//  用来存socket
-    //现在还有一个最大的问题没有解决
+    
 
     public ChatServer(int port) throws IOException {
         this.port = port;
@@ -30,9 +30,9 @@ public class ChatServer {
     public void start() throws IOException {
 
 //        ChatServer chatServer = new ChatServer(port);
-        System.setProperty("javax.net.ssl.keyStore", "/Users/quanyu/Desktop/Server/secure/kserver.keystore");
+        System.setProperty("javax.net.ssl.keyStore", "/Users/quanyu/Desktop/Files/project/socket编程project/ChatRoom/Server/secure/kserver.keystore");
         System.setProperty("javax.net.ssl.keyStorePassword", "227195");
-        System.setProperty("javax.net.ssl.trustStore", "/Users/quanyu/Desktop/Server/secure/tserver.keystore");
+        System.setProperty("javax.net.ssl.trustStore", "/Users/quanyu/Desktop/Files/project/socket编程project/ChatRoom/Server/secure/tserver.keystore");
         System.setProperty("javax.net.ssl.trustStorePassword", "227195");
 //            serverSocket = new ServerSocket(port);
         SSLServerSocketFactory serverSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory
