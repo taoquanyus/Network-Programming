@@ -68,7 +68,6 @@ public class ClientStarter {
             else {
                 System.out.println("please just input number 1 , 2 or 3\n\n");
             }
-
         }
 
 
@@ -162,7 +161,9 @@ public class ClientStarter {
             BufferedReader br = new BufferedReader(isr);
             String nickname=br.readLine();
             socket.close();
-            if(nickname.equals("false")) return null;
+            if(nickname.equals("false")) {
+                return null;
+            }
             return nickname;
         }
         catch (Exception e)
